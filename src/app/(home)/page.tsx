@@ -1,9 +1,11 @@
-import { Button } from '@/components/ui/button'
+'use client'
+import { getMountainList } from '@/app/(home)/api'
+import useSWR from 'swr'
 
 export default function Home() {
-  return (
-    <div>
-      <Button className="flex">test</Button>
-    </div>
-  )
+  const { data, error, isLoading } = useSWR('/main/list', getMountainList, {
+    revalidateOnFocus: false,
+  })
+
+  return <div>home</div>
 }
