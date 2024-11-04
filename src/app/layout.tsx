@@ -14,8 +14,8 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-  title: '',
-  description: '',
+  title: 'My App',
+  description: 'Description of my app',
 }
 
 export default function RootLayout({
@@ -26,10 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen bg-green-100 antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen justify-center bg-transparent antialiased md:bg-green-100 lg:pl-[50%]`}
       >
-        <div className="mx-auto flex ">
-          <div className="min-w-[550px] bg-white">{children}</div>
+        <div className="min-h-screen w-full max-w-[550px] bg-white">
+          {children}
         </div>
       </body>
     </html>
