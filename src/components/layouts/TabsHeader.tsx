@@ -1,36 +1,43 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const TabsHeader = ({ children }: { children: ReactNode }) => {
-  const [menu, setMenu] = useState<'home' | 'schedule'>('home') // 'home'과 'schedule' 중 하나로 타입 지정
+  const pathname = usePathname()
 
-  const handleMenuClick = (selectedMenu: 'home' | 'schedule') => {
-    setMenu(selectedMenu)
+  const getMenuFromPath = (path: string): 'home' | 'schedule' => {
+    if (path.startsWith('/schedule')) return 'schedule'
+    return 'home'
   }
+
+  const currentMenu = getMenuFromPath(pathname || '/')
 
   return (
     <div className="min-h-screen w-full">
       <div className="flex border-b">
         <div className="p-4">
-          <button
-            onClick={() => handleMenuClick('home')}
+          <Link
+            href="/"
+            passHref
             className={`text-lg ${
-              menu === 'home' ? 'font-bold' : 'font-normal'
+              currentMenu === 'home' ? 'font-bold' : 'font-normal'
             }`}
           >
             홈
-          </button>
+          </Link>
         </div>
         <div className="p-4">
-          <button
-            onClick={() => handleMenuClick('schedule')}
+          <Link
+            href="/schedule"
+            passHref
             className={`text-lg ${
-              menu === 'schedule' ? 'font-bold' : 'font-normal'
+              currentMenu === 'schedule' ? 'font-bold' : 'font-normal'
             }`}
           >
             등산일정
-          </button>
+          </Link>
         </div>
       </div>
       {children}
