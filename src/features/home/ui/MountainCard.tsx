@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { getMountainList } from '@/features/home/api/mountainList'
 
-export async function MountainCard() {
+export const MountainCard = async () => {
   const mountains = await getMountainList()
 
   return (
@@ -18,8 +18,9 @@ export async function MountainCard() {
               priority
             />
           </div>
-          <div>
+          <div className="flex gap-2">
             <p>{mountain.mntiName}</p>
+            <p>{mountain.height}m</p>
           </div>
         </div>
       ))}
