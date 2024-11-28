@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { cookies } from 'next/headers'
+import { headers } from 'next/headers'
 
 export const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
@@ -14,18 +14,22 @@ export const createServerApi = async () => {
     },
   })
 
-  // 서버 사이드에서는 쿠키를 직접 가져와서 사용
-  const cookieStore = await cookies()
-  const token = cookieStore.get('token')?.value
+  try {
+    const headersList = await headers()
+    const cookieHeader = await headersList.get('cookie')
+    const token = cookieHeader?.split('token=')?.[1]?.split(';')?.[0]
 
-  if (token) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    }
+  } catch (error) {
+    console.error('Error getting headers:', error)
   }
 
   return api
 }
 
-// 클라이언트 사이드용 API 인스턴스
+// 클라이언트 사이드용 API 인스턴스는 동일하게 유지
 export const createClientApi = () => {
   const api = axios.create({
     baseURL: BASE_URL,
@@ -37,7 +41,6 @@ export const createClientApi = () => {
 
   api.interceptors.request.use(
     (config) => {
-      // 클라이언트에서는 쿠키를 자동으로 포함
       config.withCredentials = true
       return config
     },
@@ -50,12 +53,10 @@ export const createClientApi = () => {
     (response) => response,
     async (error) => {
       if (error.response?.status === 401) {
-        // 토큰 갱신 로직
         try {
           await axios.post('/api/auth/refresh')
           return api.request(error.config)
         } catch {
-          // 갱신 실패시 로그아웃
           window.location.href = '/login'
         }
       }
