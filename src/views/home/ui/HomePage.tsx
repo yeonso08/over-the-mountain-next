@@ -1,11 +1,9 @@
-import { MountainCard } from '@/features/home/ui/MountainCard'
-import { ToggleButton } from '@/features/home/ui/ToggleButton'
+import { MountainList } from '@/features/home/ui/MountainList'
 
 export function HomePage() {
   return (
-    <div className="space-y-4 p-4">
-      <ToggleButton />
-      <MountainCard />
+    <div className="p-4">
+      <MountainList />
     </div>
   )
 }

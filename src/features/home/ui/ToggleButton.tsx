@@ -1,12 +1,15 @@
 'use client'
 
 import { Button } from '@/shared/ui/button'
-import { useState } from 'react'
+import { MountainLevel } from '../model/types'
 
-export const ToggleButton = () => {
-  const [selected, setSelected] = useState<string>('')
+interface ToggleButtonProps {
+  selected: MountainLevel
+  onSelect: (selectedLevel: MountainLevel) => void
+}
 
-  const buttons = ['산 아래 산', '산 중의 산', '산 너머 산']
+export const ToggleButton = ({ selected, onSelect }: ToggleButtonProps) => {
+  const buttons: MountainLevel[] = ['산 아래 산', '산 중의 산', '산 너머 산']
 
   return (
     <div className="space-x-4">
@@ -19,7 +22,7 @@ export const ToggleButton = () => {
               ? 'bg-primary text-primary-foreground'
               : 'border-primary text-primary'
           }`}
-          onClick={() => setSelected(buttonText)}
+          onClick={() => onSelect(buttonText)}
         >
           {buttonText}
         </Button>
